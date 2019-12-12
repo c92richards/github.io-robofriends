@@ -1,28 +1,62 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import CardList  from './CardList';
+import Searchbox from './Searchbox';
+import {robots} from './robots';
+import Scroll from './Scroll';
+import Particle from './Particle';
+
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+
+ 
+
+
+class App  extends Component   {
+	constructor(){
+		super()
+		this.state = {
+			robots: [],
+			searchfield:""
+		}
+	}
+
+	componentDidMount(){
+		   this.setState({ robots: robots })
+	}
+
+
+
+	onSearchChange = (event) => {
+		this.setState({ searchfield: event.target.value })
+		
+	}
+	render(){
+		const { robots, searchfield } = this.state
+		const filteredRobots = robots.filter(robot => {
+		 return robots.name.toLowerCase().includes(searchfield.toLowerCase())
+		})
+		if (this.state.robots.length === 0){
+			return <h1>Loading</h1>
+		}else {
+
+			return (
+				<div className='tc'>
+				    <div>
+				     <Particle />
+				    </div>
+			        <h1 className='f1'>RoboFriends</h1>
+			        <Searchbox searchChange={this.onSearchChange}/>
+			        <Scroll>
+					 <CardList robots={filteredRobots}/>
+					</Scroll>
+					
+				</div>
+			);
+		}
+	}
+	
 }
+
 
 export default App;
